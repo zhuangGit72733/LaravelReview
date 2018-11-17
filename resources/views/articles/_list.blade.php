@@ -1,4 +1,16 @@
 @extends('articles.index')
+@section('sidebar')
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td><a href="#">首页</a></td>
+        </tr>
+        <tr>
+            <td><a href="#">分类</a></td>
+        </tr>
+        </tbody>
+    </table>
+@endsection
 @section('description')
     <table class="table table-bordered">
         <caption>边框表格布局</caption>

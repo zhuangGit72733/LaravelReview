@@ -51,17 +51,27 @@ class ArticlesController extends Controller
     {
         $this->authorize('create', $article);//ArticlesPolicy.php授权create方式
         Validator::make($request->toArray(), [//图片过滤
+            'photo' =>'required|image|max:200*1024',
             'title' => 'required|unique:articles|min:2',
             'content' => 'required',
+            'category_id' => 'required|exists:categories,id'
         ],
             [
+                'photo.required' =>'请选择头像',
+                'photo.image' =>'图片样式不符',
+                'photo.max' =>'图片大小不能超过200K',
                 'title.required' => '文章标题不能为空',
                 'title.unique' =>'标题不能重复',
                 'title.min' =>'标题至少两个字',
                 'content.required'  => '内容不能为空',
+                'category_id.required' =>'分类不能为空',
+                'category_id.in_array' =>'分类必须存在'
             ])->validate();
         $article->fill($request->all());//变量填充
         $article->user_id = Auth::id();//获取用户id
+        $extension = $request->photo->extension();//获取文件扩展名
+        $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
+        $article->photo = $path;//强制赋值photo
         $article->save();
         return redirect()->route('articles.index');
     }
@@ -75,6 +85,7 @@ class ArticlesController extends Controller
     public function show(Article $article)
     {
         $comments = $article->comments;
+        $comments= comment::where([])->orderBy('created_at','desc')->get();
         return view('articles._show', compact('article', 'comments'));
 
     }
@@ -104,10 +115,25 @@ class ArticlesController extends Controller
     {
 
         $this->authorize('update', $article);//ArticlesPolicy.php授权
-        $extension = $request->photo->extension();//获取文件扩展名
-        $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
+        Validator::make($request->toArray(), [
+            'title' => 'required|min:2',
+            'content' => 'required',
+            'photo' =>'image|max:200*1024'
+        ],
+        [
+            'title.required' => '文章标题不能为空',
+            'title.min' =>'标题至少两个字',
+            'content.required'  => '内容不能为空',
+            'photo.image' =>'图片样式不符',
+            'photo.max' =>'图片大小不能超过200K',
+
+        ])->validate();
         $article->fill($request->all());//变量填充
-        $article->photo = $path;
+        if ($request->hasFile('photo')) {
+            $extension = $request->photo->extension();//获取文件扩展名
+            $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
+            $article->photo = $path;//强制赋值photo
+        }
         $article->save();
         return redirect()->route('articles.index');
     }
