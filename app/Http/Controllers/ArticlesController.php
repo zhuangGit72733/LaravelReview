@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ArticlesController extends Controller
 {
@@ -46,7 +47,17 @@ class ArticlesController extends Controller
      */
     public function store(Request $request,Article $article)
     {
-       // $this->authorize('create', $article);//ArticlesPolicy.php授权create方式
+        $this->authorize('create', $article);//ArticlesPolicy.php授权create方式
+        Validator::make($request->toArray(), [//图片过滤
+            'title' => 'required|unique:articles|min:2',
+            'content' => 'required',
+        ],
+            [
+                'title.required' => '文章标题不能为空',
+                'title.unique' =>'标题不能重复',
+                'title.min' =>'标题至少两个字',
+                'content.required'  => '内容不能为空',
+            ])->validate();
         $article->fill($request->all());//变量填充
         $article->user_id = Auth::id();//获取用户id
         $article->save();

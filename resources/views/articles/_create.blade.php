@@ -1,6 +1,15 @@
 @extends('articles.index')
 @section('title','create')
 @section('description')
+    @if (count($errors) > 0)<!--错误反馈机制-->
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form class="form-horizontal" method="post" action="{{ route('articles.store') }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
