@@ -5,7 +5,7 @@ namespace App\Models;
 use App\User;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Comment;
 class Article extends Model
 {
     protected $fillable = [
@@ -19,6 +19,16 @@ class Article extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public  function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+
+
+
     public function getPhotoAttribute($v)
         //修改器定义photo的文件路径 ,
         //数据库有_的字段更改为驼峰命名

@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Comment;
 
 class ArticlesController extends Controller
 {
@@ -26,7 +27,7 @@ class ArticlesController extends Controller
     {
       // $order = $request->order;
        $articles =  $article->orderBy('id', 'asc')->paginate(5);//列表页->字段排序->分页
-      return view('articles._list',compact('articles'));//渲染视图，compact将变量传递
+        return view('articles._list',compact('articles'));//渲染视图，compact将变量传递
     }
 
     /**
@@ -71,9 +72,10 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Article $article)
     {
-
+        $comments = $article->comments;
+        return view('articles._show', compact('article', 'comments'));
 
     }
 

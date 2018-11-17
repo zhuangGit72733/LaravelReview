@@ -23,7 +23,7 @@
         @foreach($articles as $article)
             <tr>
                 <td>{{ $article->id }}</td>
-                <td>{{ $article->title }}</td>
+                <td><a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a></td>
                 <td>{{ optional($article->category)->name }}</td>
                 <td>{{ optional($article->user)->name }}</td>
                 <td><img src="{{ $article->photo }}" style="width: 50px;height:50px;"> </td>
