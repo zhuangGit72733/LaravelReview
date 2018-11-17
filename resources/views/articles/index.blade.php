@@ -5,8 +5,9 @@
         <h1>Hello, world!</h1>
         <div class="row">
             <div class="col-md-2">
-
+                @yield('sidebar')
             </div>
+
             <div class="col-md-10">
                 <div class="panel panel-default">
                     <div class="panel-body">

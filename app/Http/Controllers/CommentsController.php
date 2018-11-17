@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CommentsController extends Controller
 {
@@ -37,6 +38,13 @@ class CommentsController extends Controller
      */
     public function store(Request $request,Comment $comment)
     {
+        Validator::make($request->toArray(), [
+            'content' => 'min:5',
+        ],
+            [
+                'content.min'  => '评论至少5个字',
+
+            ])->validate();
         $comment->user_id = Auth::id();//获取用户id
         $comment->fill($request->all());
         $comment->save();
