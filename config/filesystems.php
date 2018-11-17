@@ -41,12 +41,21 @@ return [
     |
     */
 
+
+
+    //定义文件路径
+
     'disks' => [
 
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
+        'custom' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+            'url' => env('APP_URL').'/uploads',
+            ],
 
         'public' => [
             'driver' => 'local',

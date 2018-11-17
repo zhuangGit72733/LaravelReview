@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
@@ -35,8 +36,8 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //$categories = Category::all();//调用关联模型的数据，Models/Articles.php
-        return view('articles._create', compact('article'));
+        $categories = Category::all();//调用关联模型的数据，Models/Articles.php
+        return view('articles._create', compact('article', 'categories'));
     }
 
     /**
@@ -85,8 +86,8 @@ class ArticlesController extends Controller
     public function edit(Article $article,Request $request)
     {
 
-
-        return view('articles._edit', compact('article'));
+        $categories = Category::all();//调用关联模型的数据，Models/Articles.php
+        return view('articles._edit', compact('article', 'categories'));
 
     }
 
@@ -99,8 +100,12 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, Article $article)
     {
+
         $this->authorize('update', $article);//ArticlesPolicy.php授权
+        $extension = $request->photo->extension();//获取文件扩展名
+        $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
         $article->fill($request->all());//变量填充
+        $article->photo = $path;
         $article->save();
         return redirect()->route('articles.index');
     }

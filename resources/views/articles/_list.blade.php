@@ -7,8 +7,9 @@
         <tr>
             <th>序号</th>
             <th>标题</th>
-            <th>内容</th>
+            <th>分类</th>
             <th>用户</th>
+            <th>头像</th>
             <th>创建时间</th>
             <th>更新时间</th>
             <th>编辑</th>
@@ -23,8 +24,9 @@
             <tr>
                 <td>{{ $article->id }}</td>
                 <td>{{ $article->title }}</td>
-                <td>{{ $article->content }}</td>
+                <td>{{ optional($article->category)->name }}</td>
                 <td>{{ optional($article->user)->name }}</td>
+                <td><img src="{{ $article->photo }}" style="width: 50px;height:50px;"> </td>
                 <td>{{ $article->created_at }}</td>
                 <td>{{ $article->updated_at }}</td>
                 @can('options', $article)
