@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ArticlesEvent;
+use App\Models\Article;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -26,6 +27,7 @@ class ArticlesListener
      */
     public function handle(ArticlesEvent $event)
     {
-        file_put_contents(public_path('articles/hello1.txt'), 'hello world');//监听事件生成
+
+        //file_put_contents(public_path('articles/hello1.txt'), 'hello world');//监听事件生成
     }
 }

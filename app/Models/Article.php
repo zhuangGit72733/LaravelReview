@@ -9,7 +9,7 @@ use App\Models\Comment;
 class Article extends Model
 {
     protected $fillable = [
-        'title', 'content','category_id','photo'//Controller中允许写入的字段
+        'user_id','title', 'content','category_id','photo'//Controller中允许写入的字段
     ];
     public function user()
     {

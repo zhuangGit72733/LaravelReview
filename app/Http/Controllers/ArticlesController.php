@@ -69,12 +69,11 @@ class ArticlesController extends Controller
                 'category_id.in_array' =>'分类必须存在'
             ])->validate();
         $article->fill($request->all());//变量填充
-        $article->user_id = Auth::id();//获取用户id
         $extension = $request->photo->extension();//获取文件扩展名
         $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
         $article->photo = $path;//强制赋值photo
+        $article->user_id = Auth::id();//获取用户id
         $article->save();
-        event(new ArticlesEvent(Article::first()));
         return redirect()->route('articles.index');
     }
 
