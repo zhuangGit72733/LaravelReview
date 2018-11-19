@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Comment;
+use App\Events\ArticlesEvent;
 
 class ArticlesController extends Controller
 {
@@ -73,6 +74,7 @@ class ArticlesController extends Controller
         $path = $request->photo->storeAs('images', md5(time()).'.'.$extension, 'custom');//存储路径
         $article->photo = $path;//强制赋值photo
         $article->save();
+        event(new ArticlesEvent(Article::first()));
         return redirect()->route('articles.index');
     }
 
@@ -98,7 +100,7 @@ class ArticlesController extends Controller
      */
     public function edit(Article $article,Request $request)
     {
-
+        $this->authorize('update', $article);//ArticlesPolicy.php授权
         $categories = Category::all();//调用关联模型的数据，Models/Articles.php
         return view('articles._edit', compact('article', 'categories'));
 
