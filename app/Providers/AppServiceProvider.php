@@ -5,8 +5,8 @@ namespace App\Providers;
 use App\Models\Article;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
 use App\Observers\ArticleObserver;
+use Illuminate\Http\Resources\Json\Resource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Article::observe(ArticleObserver::class);
+        Resource::withoutWrapping();//移除api接口的data字段
     }
 
     /**

@@ -15,13 +15,13 @@ class ArticleResource extends Resource
      */
     public function toArray($request)
     {
-        return [
+        return [//说明
             'id' => $this->id,
-            'title' => $this->title,
-            'content' => $this->content,
-            'username' => optional($this->user)->name,
-            'category' => optional($this->category)->name,
-            'image' => $this->image,
+            '标题' => $this->title,
+            '内容' => $this->content,
+            '用户名' => optional($this->user)->name,
+            '分类' => optional($this->category)->name,
+            '头像'=> $this->photo,
         ];
     }
 }

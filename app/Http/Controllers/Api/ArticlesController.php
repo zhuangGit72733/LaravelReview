@@ -49,7 +49,7 @@ class ArticlesController extends Controller
         $article->fill($request->all());//变量填充
         $article->photo = $path;//强制赋值photo
         $article->save();//变量存储数据
-        return  response()->json(['status'=>true, 'createId' => $article->id])->setStatusCode(201);
+        return  response()->json(['状态'=>true, '新增id' => $article->id])->setStatusCode(201);
     }
     public function update(Request $request)
     {
@@ -82,13 +82,13 @@ class ArticlesController extends Controller
         return $article->toArray();
         $article->save();//变量保存数据
 
-        return response()->json(['status' => true,'updateId' => $article->id])->setStatusCode(201);
+        return response()->json(['状态' => true,'更新id' => $article->id])->setStatusCode(201);
     }
     public function delete(Request $request)
     {
         $article = Article::find($request->article_id);//接口调用delete方法
         $article->delete();
-        return [];
+        return ['id为'.$request->article_id.'删除成功'];
     }
 
 }
