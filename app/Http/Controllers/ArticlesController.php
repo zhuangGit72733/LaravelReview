@@ -27,7 +27,7 @@ class ArticlesController extends Controller
     public function index(Article $article,Request $request)
     {
       // $order = $request->order;
-       $articles =  $article->orderBy('id', 'asc')->paginate(5);//列表页->字段排序->分页
+       $articles =  $article::where('id', '<', 100)->simplePaginate(5);//列表页->字段排序->分页
         return view('articles._list',compact('articles'));//渲染视图，compact将变量传递
     }
 

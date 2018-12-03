@@ -17,6 +17,11 @@ class ArticlesPolicy
      * @param  \App\Models\Article  $article
      * @return mixed
      */
+    public function index(User $user, Article $article)
+    {
+        return $user->id == $article->user_id;
+    }
+
     public function view(User $user, Article $article)
     {
         //

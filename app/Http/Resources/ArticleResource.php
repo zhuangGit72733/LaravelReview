@@ -21,7 +21,7 @@ class ArticleResource extends Resource
             'content' => $this->content,
             'username' => optional($this->user)->name,
             'category' => optional($this->category)->name,
-            'photo' => $this->photo,
+            'image' => $this->image,
         ];
     }
 }

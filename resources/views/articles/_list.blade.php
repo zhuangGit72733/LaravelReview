@@ -33,6 +33,7 @@
         <tbody>
         <a href="{{ route('articles.create') }}"><button type="submit" class="btn">新增</button></a>
         @foreach($articles as $article)
+            @can('options', $article)
             <tr>
                 <td>{{ $article->id }}</td>
                 <td><a href="{{ route('articles.show', $article->id) }}">{{ $article->title }}</a></td>
@@ -41,7 +42,6 @@
                 <td><img src="{{ $article->photo }}" style="width: 50px;height:50px;"> </td>
                 <td>{{ $article->created_at }}</td>
                 <td>{{ $article->updated_at }}</td>
-                @can('options', $article)
                     <td> <a href="{{ route('articles.edit', $article->id) }}"><button type="button" class="btn">编辑</button></a></td>
 
                     <td>
@@ -53,8 +53,6 @@
                         </form>
                     </td>
                 @else
-                    <td></td>
-                    <td></td>
                 @endif
             </tr>
 
@@ -62,4 +60,11 @@
         </tbody>
     </table>
     {{ $articles->links() }}
+    <script type="text/JavaScript">
+        $.getJSON("http://qiandao.home.test/api/users/list",function(data){
+            alert(data.name);
+        });
+
+
+    </script>
 @endsection

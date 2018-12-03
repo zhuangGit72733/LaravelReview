@@ -9,7 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Tests\Models\User;
+use App\User;
 use App\Models\Category;
 
 
@@ -137,12 +137,29 @@ class ArticlesController extends Controller
     protected function form()
     {
         $form = new Form(new Article);
+        $form->text('title', '标题')->rules(
+      'required|max:10',[
+            'required' => '标题不能为空',
+            'max' =>'标题不能超过10个字'
 
-        $form->text('title', '标题');
-        $form->textarea('content', '内容');
-        $form->text('user_id', '作者');
-        $form->select('category_id', '分类')->options(Category::all()->pluck('name', 'id'));
-        $form->image('photo', '头像');
+        ]);
+        $form->textarea('content', '内容')->rules('required', [
+            'required' => '内容不能为空'
+        ]);
+        $form->select('user_id', '作者')->options(User::all()->pluck('name','id'))
+            ->rules('exists:users,id', [
+            'in_array' => '用户不存在',
+        ]);
+        $form->select('category_id', '分类')->options(Category::all()->pluck('name', 'id'))
+            ->rules('required|exists:categories,id', [
+            'required' => '分类不能为空',
+            'in_array' => '分类必须存在',
+        ]);
+        $form->image('photo', '头像')->rules('required|max:200*1024|image', [
+            'required' => '头像不能为空',
+            'image' => '头像样式不符',
+            'max' => '头像大小不能超过200K',
+        ]);
 
         return $form;
     }
